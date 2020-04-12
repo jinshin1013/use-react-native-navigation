@@ -1,4 +1,3 @@
-  
 {
   "compilerOptions": {
     "allowJs": false,
@@ -23,7 +22,16 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es5",
+    "experimentalDecorators": true
   },
   "include": ["src"],
-  "exclude": ["node_modules", "tests", "**/__tests__/**/*", "**/__stories__/**/*", "*.test.ts", "*.test.tsx"]
+  "exclude": [
+    "node_modules",
+    "babel.config.js",
+    "tests",
+    "**/__tests__/**/*",
+    "**/__stories__/**/*",
+    "*.test.ts",
+    "*.test.tsx"
+  ]
 }

@@ -1,46 +1,21 @@
 module.exports = {
-  root: true,
-  extends: ['prettier', 'prettier/@typescript-eslint', 'prettier/react'],
-  parser: '@typescript-eslint/parser',
+  parser: '@typescript-eslint/parser', // Specifies the ESLint parser
+  extends: [
+    'plugin:react/recommended', // Uses the recommended rules from @eslint-plugin-react
+    'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+    'prettier/@typescript-eslint', // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
+    'plugin:prettier/recommended', // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
+  ],
   parserOptions: {
-    project: './tsconfig.json',
+    ecmaVersion: 2020, // Allows for the parsing of modern ECMAScript features
+    sourceType: 'module', // Allows for the use of imports
   },
-  plugins: ['@typescript-eslint'],
   rules: {
-    // Eslint rules
-    radix: 'off',
-    'lines-between-class-members': 'off',
-    'global-require': 'off',
-    'class-methods-use-this': 'off',
-    'no-use-before-define': 'off',
-    'no-underscore-dangle': 'off',
-    'no-return-assign': 'off',
-    'no-plusplus': 'off',
-    'consistent-return': 'off',
-
-    // Import rules
-    'import/prefer-default-export': 'off',
-    'import/no-extraneous-dependencies': 'off',
-    'import/no-cycle': 'off',
-    'import/named': 'off',
-
-    // React rules
-    'react/prop-types': 'off',
-    'react/destructuring-assignment': 'off',
-    'react/no-array-index-key': 'off',
-    'react/jsx-props-no-spreading': 'off',
-    'react/state-in-constructor': 'off',
-
-    // TypeScript rules
-    '@typescript-eslint/no-use-before-define': 'off',
-    '@typescript-eslint/camelcase': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
   },
-
   settings: {
-    'import/resolver': {
-      node: {
-        paths: ['src'],
-      },
+    react: {
+      version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use
     },
   },
 }
