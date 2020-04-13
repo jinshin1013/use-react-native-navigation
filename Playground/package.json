@@ -14,7 +14,8 @@
     "mobx-react-lite": "2.0.6",
     "react": "16.11.0",
     "react-native": "0.62.2",
-    "react-native-navigation": "6.4.0"
+    "react-native-navigation": "6.4.0",
+    "use-react-native-navigation": "*"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",

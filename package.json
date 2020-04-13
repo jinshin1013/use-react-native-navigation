@@ -13,8 +13,8 @@
     "wix-navigation",
     "rnn"
   ],
-  "author": "Jin Shin",
-  "license": "ISC",
+  "author": "Jin Shin <jinshin1013@gmail.com>",
+  "license": "MIT",
   "peerDependencies": {
     "mobx": ">=5.0.0",
     "react": ">=16.8.3",

@@ -46,7 +46,7 @@ export class NavigationStore {
     commandType: null,
   }
 
-  @action
+  @action.bound
   updateNavigationStatus(status: Partial<NavigationStatus>) {
     this.status = {
       ...this.status,
@@ -57,7 +57,7 @@ export class NavigationStore {
   /**
    * A wrapper for Navigation.setRoot.
    */
-  @action
+  @action.bound
   setRoot(layout: LayoutRoot) {
     this.updateNavigationStatus({
       updating: true,
@@ -69,7 +69,7 @@ export class NavigationStore {
   /**
    * A wrapper for Navigation.setStackRoot.
    */
-  @action
+  @action.bound
   setStackRoot<P>(toId: string, layout: Layout<P>) {
     this.updateNavigationStatus({
       updating: true,
@@ -81,7 +81,7 @@ export class NavigationStore {
   /**
    * A wrapper for Navigation.push.
    */
-  @action
+  @action.bound
   push<P>(toId: string, layout: Layout<P>) {
     this.updateNavigationStatus({
       updating: true,
@@ -93,7 +93,7 @@ export class NavigationStore {
   /**
    * A wrapper for Navigation.pop.
    */
-  @action
+  @action.bound
   pop(onId: string, mergeOptions?: Options) {
     this.updateNavigationStatus({
       updating: true,
@@ -105,7 +105,7 @@ export class NavigationStore {
   /**
    * A wrapper for Navigation.popTo.
    */
-  @action
+  @action.bound
   popTo(toId: string, mergeOptions?: Options) {
     this.updateNavigationStatus({
       updating: true,
@@ -117,7 +117,7 @@ export class NavigationStore {
   /**
    * A wrapper for Navigation.popToRoot.
    */
-  @action
+  @action.bound
   popToRoot(onId: string, mergeOptions?: Options) {
     this.updateNavigationStatus({
       updating: true,
@@ -129,7 +129,7 @@ export class NavigationStore {
   /**
    * A wrapper for Navigation.showModal.
    */
-  @action
+  @action.bound
   showModal<P>(layout: Layout<P>) {
     this.updateNavigationStatus({
       updating: true,
@@ -141,7 +141,7 @@ export class NavigationStore {
   /**
    * A wrapper for Navigation.dismissModal.
    */
-  @action
+  @action.bound
   dismissModal(onId: string, mergeOptions?: Options) {
     this.updateNavigationStatus({
       updating: true,
@@ -153,7 +153,7 @@ export class NavigationStore {
   /**
    * A wrapper for Navigation.dismissAllModals.
    */
-  @action
+  @action.bound
   dismissAllModals(mergeOptions?: Options) {
     this.updateNavigationStatus({
       updating: true,
@@ -168,7 +168,7 @@ export class NavigationStore {
    * Only supports a single component layout as stack layout could cause complications when
    * tracking the current componentId.
    */
-  @action
+  @action.bound
   showOverlay<P>(props: NavigationProps<P>) {
     this.updateNavigationStatus({
       updating: true,
@@ -180,7 +180,7 @@ export class NavigationStore {
   /**
    * A wrapper for Navigation.dismissOverlay.
    */
-  @action
+  @action.bound
   dismissOverlay(onId: string) {
     this.updateNavigationStatus({
       updating: true,
