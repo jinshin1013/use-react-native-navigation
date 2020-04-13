@@ -1,6 +1,6 @@
 {
   "name": "use-react-native-navigation",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A utility library for easier use of react-native-navigation library.",
   "main": "lib/dist/index.js",
   "scripts": {
