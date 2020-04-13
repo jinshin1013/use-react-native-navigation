@@ -1,10 +1,22 @@
-import { useCallback } from 'react'
-import { useNavigationStore } from './navigation.store'
+import { useNavigationStore, NavigationCommandType } from './navigation.store'
 import {
   useComponentDidAppear,
   useComponentDidDisappear,
   useModalDismissed,
 } from './useNavigationEvent'
+
+/** A list of commands to ignore for ComponentDidAppear event. */
+const componentDidAppearCommandBlacklist: NavigationCommandType[] = [
+  'MANUAL_DISMISS_ALL_MODALS',
+  'MANUAL_DISMISS_MODAL',
+  'DISMISS_OVERLAY',
+]
+
+/** A list of commands to ignore for ModalDismissed event. */
+const modalDismissedCommandBlacklist: NavigationCommandType[] = [
+  'MANUAL_DISMISS_MODAL',
+  'MANUAL_DISMISS_ALL_MODALS',
+]
 
 /**
  * ### Use Track Navigation
@@ -12,29 +24,7 @@ import {
  * Set up the event Navigation event listeners to track the current componentId.
  */
 export const useTrackNavigation = (passedComponentId: string) => {
-  const { status, updateNavigationStatus } = useNavigationStore()
-
-  const onAllStackComponentsDismissed = useCallback((stackList: string[]) => {
-    if (stackList.length === 0) {
-      throw new Error('There is no previous stack.')
-    }
-
-    return stackList[0]
-  }, [])
-
-  const onPreviousStackComponentShown = useCallback((stackList: string[]) => {
-    if (stackList.length === 0) {
-      throw new Error('There is no previous stack.')
-    }
-
-    const lastStackComponentId = stackList[stackList.length - 1]
-    const updatedStackList = stackList.slice(0, -1)
-
-    return {
-      lastStackComponentId,
-      updatedStackList,
-    }
-  }, [])
+  const { status, updateNavigationStatus, onPreviousStackComponentShown } = useNavigationStore()
 
   /**
    * Component appear event listener.
@@ -48,6 +38,10 @@ export const useTrackNavigation = (passedComponentId: string) => {
 
     const incomingComponentId = componentId
     const currentComponentId = status.currentComponentId
+
+    if (componentDidAppearCommandBlacklist.includes(status.commandType as NavigationCommandType)) {
+      return
+    }
 
     /**
      * When Modal or Overlay is shown, need to add the previous componentId to the previousStackComponentIds.
@@ -108,23 +102,11 @@ export const useTrackNavigation = (passedComponentId: string) => {
    * Modal dismiss event listener.
    */
   useModalDismissed(() => {
-    /**
-     * When dismissing all modals, grab the first componentId in the stack list
-     * then reset the stack list.
-     */
-    if (status.commandType === 'DISMISS_ALL_MODALS') {
-      const firstStackComponentId = onAllStackComponentsDismissed(status.previousStackComponentIds)
-
-      updateNavigationStatus({
-        currentComponentId: firstStackComponentId,
-        previousStackComponentIds: [],
-        previousComponentId: null,
-        updating: false,
-        commandType: null,
-      })
+    if (modalDismissedCommandBlacklist.includes(status.commandType as NavigationCommandType)) {
       return
     }
 
+    // This will only run when Android hardware back button is pressed.
     const { lastStackComponentId, updatedStackList } = onPreviousStackComponentShown(
       status.previousStackComponentIds
     )

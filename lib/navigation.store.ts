@@ -10,8 +10,8 @@ export type NavigationCommandType =
   | 'POP_TO'
   | 'POP_TO_ROOT'
   | 'SHOW_MODAL'
-  | 'DISMISS_MODAL'
-  | 'DISMISS_ALL_MODALS'
+  | 'MANUAL_DISMISS_MODAL'
+  | 'MANUAL_DISMISS_ALL_MODALS'
   | 'SHOW_OVERLAY'
   | 'DISMISS_OVERLAY'
 
@@ -148,9 +148,15 @@ export class NavigationStore {
    */
   @action.bound
   dismissModal(onId: string, mergeOptions?: Options) {
+    const { lastStackComponentId, updatedStackList } = this.onPreviousStackComponentShown(
+      this.status.previousStackComponentIds
+    )
     this.updateNavigationStatus({
+      currentComponentId: lastStackComponentId,
+      previousStackComponentIds: updatedStackList,
+      previousComponentId: null,
       updating: true,
-      commandType: 'DISMISS_MODAL',
+      commandType: 'MANUAL_DISMISS_MODAL',
     })
     return Navigation.dismissModal(onId, mergeOptions).catch(this.handleNavigationError)
   }
@@ -160,9 +166,16 @@ export class NavigationStore {
    */
   @action.bound
   dismissAllModals(mergeOptions?: Options) {
+    const firstStackComponentId = this.onAllStackComponentsDismissed(
+      this.status.previousStackComponentIds
+    )
+
     this.updateNavigationStatus({
+      currentComponentId: firstStackComponentId,
+      previousStackComponentIds: [],
+      previousComponentId: null,
       updating: true,
-      commandType: 'DISMISS_ALL_MODALS',
+      commandType: 'MANUAL_DISMISS_ALL_MODALS',
     })
     return Navigation.dismissAllModals(mergeOptions).catch(this.handleNavigationError)
   }
@@ -196,6 +209,28 @@ export class NavigationStore {
       updating: false,
     })
     throw new Error(e)
+  }
+
+  onPreviousStackComponentShown(stackList: string[]) {
+    if (stackList.length === 0) {
+      throw new Error('There is no previous stack. 323900')
+    }
+
+    const lastStackComponentId = stackList[stackList.length - 1]
+    const updatedStackList = stackList.slice(0, -1)
+
+    return {
+      lastStackComponentId,
+      updatedStackList,
+    }
+  }
+
+  onAllStackComponentsDismissed(stackList: string[]) {
+    if (stackList.length === 0) {
+      throw new Error('There is no previous stack. 120392')
+    }
+
+    return stackList[0]
   }
 }
 
