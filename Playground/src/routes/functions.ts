@@ -1,4 +1,4 @@
-import { Layout, Navigation, Options, AnimationOptions } from 'react-native-navigation'
+import { Layout, Navigation, Options } from 'react-native-navigation'
 
 type NavigationProps<P> = {
   name: string

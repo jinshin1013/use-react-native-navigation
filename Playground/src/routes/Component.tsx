@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Alert } from 'react-native'
 import { observer } from 'mobx-react-lite'
-import { useNavigation, NavigationUtility } from 'use-react-native-navigation'
+import { useNavigation, NavigationUtility } from '../../../lib'
 
 import { Screens } from './routes'
 

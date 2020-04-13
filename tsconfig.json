@@ -1,37 +1,27 @@
 {
   "compilerOptions": {
-    "allowJs": false,
-    "allowSyntheticDefaultImports": false,
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
-    "alwaysStrict": true,
-    "module": "commonjs",
-    "declaration": true,
-    "declarationMap": true,
-    "diagnostics": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmitOnError": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "outDir": "dist",
-    "pretty": true,
-    "sourceMap": true,
-    "skipLibCheck": true,
+    "jsx": "react-native",
+    "lib": ["es6", "es2016"],
+    "moduleResolution": "node",
+    "noEmit": true,
     "strict": true,
-    "target": "es5",
+    "target": "esnext",
+    "baseUrl": "./src",
+    "paths": {
+      "*": ["*", "*.ios", "*.android"],
+      "src/*": ["src/*"]
+    },
     "experimentalDecorators": true
   },
-  "include": ["src"],
   "exclude": [
     "node_modules",
     "babel.config.js",
-    "tests",
-    "**/__tests__/**/*",
-    "**/__stories__/**/*",
-    "*.test.ts",
-    "*.test.tsx"
+    "metro.config.js",
+    "jest.config.js",
+    "e2e",
+    "__test__/**/*-test.{ts,tsx}"
   ]
 }

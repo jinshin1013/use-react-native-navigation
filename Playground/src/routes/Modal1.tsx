@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, ViewStyle, View, Text, Button, TextStyle } from 'react-native'
 import { observer } from 'mobx-react-lite'
-import { useNavigation, NavigationUtility } from 'use-react-native-navigation'
+import { useNavigation, NavigationUtility } from '../../../lib'
 
 import { Screen1Props } from './Screen1'
 import { Screen2Props } from './Screen2'

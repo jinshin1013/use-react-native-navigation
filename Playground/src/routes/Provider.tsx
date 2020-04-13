@@ -1,7 +1,7 @@
 import React from 'react'
 import { Options } from 'react-native-navigation'
 import { observer } from 'mobx-react-lite'
-import { useRegisterNavigationEvents } from 'use-react-native-navigation'
+import { useRegisterNavigationEvents } from '../../../lib'
 
 import { RootType } from 'routes/types'
 

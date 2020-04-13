@@ -1,11 +1,12 @@
 {
   "name": "use-react-native-navigation",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A utility library for easier use of react-native-navigation library.",
-  "main": "dist/index.js",
+  "main": "lib/dist/index.js",
   "scripts": {
-    "lint": "eslint ./src",
-    "build": "rm -rf ./dist && tsc"
+    "lint": "eslint ./lib",
+    "start": "react-native start",
+    "build": "rm -rf ./lib/dist && tsc --project tsconfig.lib.json"
   },
   "keywords": [
     "react-native",
@@ -22,21 +23,24 @@
     "react-native-navigation": ">=4.5.0"
   },
   "devDependencies": {
-    "@babel/core": "7.8.4",
+    "@babel/core": "7.9.0",
     "@babel/plugin-proposal-decorators": "7.8.3",
-    "@types/react": "16.9.19",
-    "@types/react-native": ">=0.59.0",
+    "@babel/runtime": "7.9.2",
+    "@types/react": "16.9.34",
+    "@types/react-native": "0.62.2",
     "@typescript-eslint/eslint-plugin": "2.27.0",
-    "@typescript-eslint/parser": "^2.27.0",
+    "@typescript-eslint/parser": "2.27.0",
     "eslint": "6.8.0",
     "eslint-config-prettier": "6.10.1",
     "eslint-plugin-prettier": "3.1.2",
     "eslint-plugin-react": "7.19.0",
-    "mobx": ">=5.0.0",
+    "metro-react-native-babel-preset": "0.59.0",
+    "mobx": "5.15.4",
+    "mobx-react-lite": "2.0.6",
     "prettier": "2.0.4",
-    "react": ">=16.8.3",
-    "react-native": ">=0.59.0",
-    "react-native-navigation": ">=4.5.0",
+    "react": "16.13.1",
+    "react-native": "0.62.2",
+    "react-native-navigation": "6.4.0",
     "typescript": "3.8.3"
   }
 }
