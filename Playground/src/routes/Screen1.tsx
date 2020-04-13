@@ -1,29 +1,26 @@
 import React from 'react'
 import { StyleSheet, ViewStyle, View, Text, TextStyle } from 'react-native'
-import { observer } from 'mobx-react-lite'
-import { useNavigation } from '../../../lib'
 
-import { Component } from './Component'
+import { NavigationActions } from './NavigationActions'
+import { NavigationStatus } from './NavigationStatus'
 import { RootType } from './types'
 
 export type Screen1Props = {}
 
-export const Screen1: RootType<Screen1Props> = observer(({ componentId }) => {
-  const navigation = useNavigation()
-
+export const Screen1: RootType<Screen1Props> = ({ componentId }) => {
   return (
     <View style={styles.wrapper}>
-      <Component />
+      <NavigationActions />
 
       <View style={styles.container}>
-        <Text style={styles.text}>Screen 1</Text>
+        <Text style={styles.text}>Name: Screen 1</Text>
         <Text style={styles.text}>{`Current: ${componentId}`}</Text>
-        <Text style={styles.text}>{`Registered: ${navigation.status.currentComponentId}`}</Text>
-        <Text style={styles.text}>{`Updating: ${navigation.status.updating}`}</Text>
       </View>
+
+      <NavigationStatus />
     </View>
   )
-})
+}
 
 Screen1.options = {
   topBar: {
@@ -43,12 +40,12 @@ const styles = StyleSheet.create<Style>({
   wrapper: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    paddingHorizontal: 20,
   },
   text: {
-    fontSize: 20,
+    fontSize: 14,
   },
   container: {
-    marginTop: 10,
+    marginTop: 20,
   },
 })

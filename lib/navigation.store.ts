@@ -33,7 +33,7 @@ export type NavigationStatus = {
    */
   previousComponentId: null | string
   /**
-   * When modal or overlay is shown, save the componentId of the
+   * When modal is shown, save the componentId of the
    * visible screen.
    */
   previousStackComponentIds: string[]

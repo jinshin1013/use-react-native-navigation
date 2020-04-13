@@ -8,7 +8,6 @@ import { Screen2 } from './Screen2'
 import { SingleModal } from './SingleModal'
 import { StackModal } from './StackModal'
 import { SingleOverlay } from './SingleOverlay'
-import { StackOverlay } from './StackOverlay'
 
 /**
  * Register Public routes
@@ -20,7 +19,6 @@ export function registerScreens() {
     .set(Screens.SingleModal, SingleModal)
     .set(Screens.StackModal, StackModal)
     .set(Screens.SingleOverlay, SingleOverlay)
-    .set(Screens.StackOverlay, StackOverlay)
 
   Array.from(routes).forEach(([routeName, component]) => {
     Navigation.registerComponent(routeName, () => wrapRoutes(component))

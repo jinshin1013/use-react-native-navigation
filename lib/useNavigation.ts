@@ -11,6 +11,14 @@ import { useNavigationStore } from './navigation.store'
 export const useRegisterNavigationEvents = (props: { componentId: string }) => {
   const { status, updateNavigationStatus } = useNavigationStore()
 
+  const onAllStackComponentsDismissed = useCallback((stackList: string[]) => {
+    if (stackList.length === 0) {
+      throw new Error('There is no previous stack.')
+    }
+
+    return stackList[0]
+  }, [])
+
   const onPreviousStackComponentShown = useCallback((stackList: string[]) => {
     if (stackList.length === 0) {
       throw new Error('There is no previous stack.')
@@ -53,6 +61,7 @@ export const useRegisterNavigationEvents = (props: { componentId: string }) => {
               ...status.previousStackComponentIds,
               currentComponentId,
             ].filter((i): i is string => !!i),
+            commandType: null,
           })
           return
         }
@@ -61,6 +70,7 @@ export const useRegisterNavigationEvents = (props: { componentId: string }) => {
           currentComponentId: incomingComponentId,
           previousComponentId: currentComponentId,
           updating: false,
+          commandType: null,
         })
       }
     )
@@ -93,6 +103,7 @@ export const useRegisterNavigationEvents = (props: { componentId: string }) => {
             previousStackComponentIds: updatedStackList,
             previousComponentId: null,
             updating: false,
+            commandType: null,
           })
         }
       }
@@ -105,15 +116,35 @@ export const useRegisterNavigationEvents = (props: { componentId: string }) => {
       ({ componentId }) => {
         if (componentId !== props.componentId) return
 
+        /**
+         * When dismissing all modals, grab the first componentId in the stack list
+         * then reset the stack list.
+         */
+        if (status.commandType === 'DISMISS_ALL_MODALS') {
+          const firstStackComponentId = onAllStackComponentsDismissed(
+            status.previousStackComponentIds
+          )
+
+          updateNavigationStatus({
+            currentComponentId: firstStackComponentId,
+            previousStackComponentIds: [],
+            previousComponentId: null,
+            updating: false,
+            commandType: null,
+          })
+          return
+        }
+
         const { lastStackComponentId, updatedStackList } = onPreviousStackComponentShown(
           status.previousStackComponentIds
         )
 
         updateNavigationStatus({
-          currentComponentId: lastStackComponentId ?? null,
+          currentComponentId: lastStackComponentId,
           previousStackComponentIds: updatedStackList,
           previousComponentId: null,
           updating: false,
+          commandType: null,
         })
       }
     )
@@ -123,13 +154,18 @@ export const useRegisterNavigationEvents = (props: { componentId: string }) => {
       disappearEvent.remove()
       modalDismissEvent.remove()
     }
-  }, [status, updateNavigationStatus, props.componentId, onPreviousStackComponentShown])
+  }, [
+    status,
+    updateNavigationStatus,
+    props.componentId,
+    onPreviousStackComponentShown,
+    onAllStackComponentsDismissed,
+  ])
 }
 
 export const useNavigation = () => {
   const {
     status,
-    updateNavigationStatus,
     setRoot,
     setStackRoot,
     push,

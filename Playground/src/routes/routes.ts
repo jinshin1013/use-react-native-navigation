@@ -4,5 +4,4 @@ export enum Screens {
   SingleModal = 'SingleModal',
   StackModal = 'StackModal',
   SingleOverlay = 'SingleOverlay',
-  StackOverlay = 'StackOverlay',
 }
