@@ -1,2 +1,3 @@
-export { useRegisterNavigationEvents, useNavigation } from './useNavigation'
+export { useNavigation } from './useNavigation'
+export { useTrackNavigation } from './useTrackNavigation'
 export * from './utility'
