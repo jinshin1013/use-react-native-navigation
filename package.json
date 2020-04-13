@@ -1,8 +1,14 @@
 {
   "name": "use-react-native-navigation",
-  "version": "0.0.4",
-  "description": "A utility library for easier use of react-native-navigation library.",
+  "version": "0.0.5",
+  "description": "A utility library for a easier use of react-native-navigation library.",
   "main": "lib/dist/index.js",
+  "homepage": "https://github.com/jinshin1013/use-react-native-navigation",
+  "repository": "github:jinshin1013/use-react-native-navigation",
+  "bugs": {
+    "email": "jinshin1013@gmail.com",
+    "url": "https://github.com/jinshin1013/use-react-native-navigation"
+  },
   "scripts": {
     "start:playground": "react-native start",
     "pod-install": "cd Playground/ios && pod install",
