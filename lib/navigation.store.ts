@@ -1,8 +1,7 @@
 import { createContext, useContext } from 'react'
 import { Navigation, Options, Layout, LayoutRoot } from 'react-native-navigation'
-import { observable, action, spy } from 'mobx'
+import { observable, action } from 'mobx'
 
-import { NavigationProps, NavigationUtility } from './utility'
 export type NavigationCommandType =
   | 'SET_ROOT'
   | 'SET_NEW_STACK_ROOT'
