@@ -6,7 +6,6 @@
     "allowUnusedLabels": false,
     "alwaysStrict": true,
     "module": "commonjs",
-    "lib": ["ES6", "ES2016"],
     "declaration": true,
     "declarationMap": true,
     "diagnostics": true,

@@ -39,7 +39,9 @@ export const useTrackNavigation = (passedComponentId: string) => {
     const incomingComponentId = componentId
     const currentComponentId = status.currentComponentId
 
-    if (componentDidAppearCommandBlacklist.includes(status.commandType as NavigationCommandType)) {
+    if (
+      componentDidAppearCommandBlacklist.indexOf(status.commandType as NavigationCommandType) >= 0
+    ) {
       return
     }
 
@@ -102,7 +104,7 @@ export const useTrackNavigation = (passedComponentId: string) => {
    * Modal dismiss event listener.
    */
   useModalDismissed(() => {
-    if (modalDismissedCommandBlacklist.includes(status.commandType as NavigationCommandType)) {
+    if (modalDismissedCommandBlacklist.indexOf(status.commandType as NavigationCommandType) >= 0) {
       return
     }
 
