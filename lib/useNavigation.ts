@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react'
+import { useLayoutEffect, useCallback } from 'react'
 import { Navigation, Layout, Options } from 'react-native-navigation'
 
 import { useNavigationStore } from './navigation.store'
@@ -9,7 +9,21 @@ import { useNavigationStore } from './navigation.store'
  * Set up the event Navigation event listeners to track the current componentId.
  */
 export const useRegisterNavigationEvents = (props: { componentId: string }) => {
-  const navigationStore = useNavigationStore()
+  const { status, updateNavigationStatus } = useNavigationStore()
+
+  const onPreviousStackComponentShown = useCallback((stackList: string[]) => {
+    if (stackList.length === 0) {
+      throw new Error('There is no previous stack.')
+    }
+
+    const lastStackComponentId = stackList[stackList.length - 1]
+    const updatedStackList = stackList.slice(0, -1)
+
+    return {
+      lastStackComponentId,
+      updatedStackList,
+    }
+  }, [])
 
   useLayoutEffect(() => {
     /**
@@ -24,9 +38,28 @@ export const useRegisterNavigationEvents = (props: { componentId: string }) => {
         if (componentType !== 'Component') return
         if (componentId !== props.componentId) return
 
-        navigationStore.updateNavigationStatus({
-          previousComponentId: navigationStore.status.currentComponentId,
-          currentComponentId: componentId,
+        const incomingComponentId = componentId
+        const currentComponentId = status.currentComponentId
+
+        /**
+         * When Modal or Overlay is shown, need to add the previous componentId to the previousStackComponentIds.
+         */
+        if (status.commandType === 'SHOW_MODAL' || status.commandType === 'SHOW_OVERLAY') {
+          updateNavigationStatus({
+            currentComponentId: incomingComponentId,
+            previousComponentId: currentComponentId,
+            updating: false,
+            previousStackComponentIds: [
+              ...status.previousStackComponentIds,
+              currentComponentId,
+            ].filter((i): i is string => !!i),
+          })
+          return
+        }
+
+        updateNavigationStatus({
+          currentComponentId: incomingComponentId,
+          previousComponentId: currentComponentId,
           updating: false,
         })
       }
@@ -50,9 +83,14 @@ export const useRegisterNavigationEvents = (props: { componentId: string }) => {
         if (componentType !== 'Component') return
         if (componentId !== props.componentId) return
 
-        if (navigationStore.status.commandType === 'DISMISS_OVERLAY') {
-          navigationStore.updateNavigationStatus({
-            currentComponentId: navigationStore.status.previousComponentId,
+        if (status.commandType === 'DISMISS_OVERLAY') {
+          const { lastStackComponentId, updatedStackList } = onPreviousStackComponentShown(
+            status.previousStackComponentIds
+          )
+
+          updateNavigationStatus({
+            currentComponentId: lastStackComponentId ?? null,
+            previousStackComponentIds: updatedStackList,
             previousComponentId: null,
             updating: false,
           })
@@ -62,32 +100,36 @@ export const useRegisterNavigationEvents = (props: { componentId: string }) => {
 
     /**
      * Modal dismiss event listener.
-     *
-     * TEST if this is needed or appear event is suffice.
      */
-    // const modalDismissEvent = Navigation.events().registerModalDismissedListener(
-    //   ({ componentId }) => {
-    //     if (componentId !== props.componentId) return
+    const modalDismissEvent = Navigation.events().registerModalDismissedListener(
+      ({ componentId }) => {
+        if (componentId !== props.componentId) return
 
-    //     navigationStore.updateNavigationStatus({
-    //       currentComponentId: navigationStore.status.previousComponentId,
-    //       previousComponentId: null,
-    //       updating: false,
-    //     })
-    //   }
-    // )
+        const { lastStackComponentId, updatedStackList } = onPreviousStackComponentShown(
+          status.previousStackComponentIds
+        )
+
+        updateNavigationStatus({
+          currentComponentId: lastStackComponentId ?? null,
+          previousStackComponentIds: updatedStackList,
+          previousComponentId: null,
+          updating: false,
+        })
+      }
+    )
 
     return () => {
       appearEvent.remove()
       disappearEvent.remove()
-      // modalDismissEvent.remove()
+      modalDismissEvent.remove()
     }
-  }, [navigationStore, props.componentId])
+  }, [status, updateNavigationStatus, props.componentId, onPreviousStackComponentShown])
 }
 
 export const useNavigation = () => {
   const {
     status,
+    updateNavigationStatus,
     setRoot,
     setStackRoot,
     push,

@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 import { Navigation, Options, Layout, LayoutRoot } from 'react-native-navigation'
-import { observable, action } from 'mobx'
+import { observable, action, spy } from 'mobx'
 
 import { NavigationProps, NavigationUtility } from './utility'
 export type NavigationCommandType =
@@ -17,32 +17,38 @@ export type NavigationCommandType =
   | 'DISMISS_OVERLAY'
 
 export type NavigationStatus = {
+  /**
+   * Whether the current componentId is still being set.
+   * There may be some delay in setting the latest componentId as
+   * it relies on `componentDidAppear` and `componentDidDisappear` events.
+   */
   updating: boolean
+  /**
+   * Current componentId visible to the user.
+   */
   currentComponentId: null | string
+  /**
+   * Previous componentId that was visible to the user.
+   * This is useful for overlay and modal dismiss events.
+   */
   previousComponentId: null | string
+  /**
+   * When modal or overlay is shown, save the componentId of the
+   * visible screen.
+   */
+  previousStackComponentIds: string[]
+  /**
+   * Custom navigation command emitted on each action.
+   */
   commandType: NavigationCommandType | null
 }
 
 export class NavigationStore {
   @observable status: NavigationStatus = {
-    /**
-     * Whether the current componentId is still being set.
-     * There may be some delay in setting the latest componentId as
-     * it relies on `componentDidAppear` and `componentDidDisappear` events.
-     */
     updating: false,
-    /**
-     * Current componentId visible to the user.
-     */
     currentComponentId: null,
-    /**
-     * Previous componentId that was visible to the user.
-     * This is useful for overlay and modal dismiss events.
-     */
     previousComponentId: null,
-    /**
-     * Custom navigation command emitted on each action.
-     */
+    previousStackComponentIds: [],
     commandType: null,
   }
 
@@ -63,7 +69,7 @@ export class NavigationStore {
       updating: true,
       commandType: 'SET_ROOT',
     })
-    return Navigation.setRoot(layout)
+    return Navigation.setRoot(layout).catch(this.handleNavigationError)
   }
 
   /**
@@ -75,7 +81,7 @@ export class NavigationStore {
       updating: true,
       commandType: 'SET_NEW_STACK_ROOT',
     })
-    return Navigation.setStackRoot(toId, layout)
+    return Navigation.setStackRoot(toId, layout).catch(this.handleNavigationError)
   }
 
   /**
@@ -87,7 +93,7 @@ export class NavigationStore {
       updating: true,
       commandType: 'PUSH',
     })
-    return Navigation.push(toId, layout)
+    return Navigation.push(toId, layout).catch(this.handleNavigationError)
   }
 
   /**
@@ -99,7 +105,7 @@ export class NavigationStore {
       updating: true,
       commandType: 'POP',
     })
-    return Navigation.pop(onId, mergeOptions)
+    return Navigation.pop(onId, mergeOptions).catch(this.handleNavigationError)
   }
 
   /**
@@ -111,7 +117,7 @@ export class NavigationStore {
       updating: true,
       commandType: 'POP_TO',
     })
-    return Navigation.popTo(toId, mergeOptions)
+    return Navigation.popTo(toId, mergeOptions).catch(this.handleNavigationError)
   }
 
   /**
@@ -123,7 +129,7 @@ export class NavigationStore {
       updating: true,
       commandType: 'POP_TO_ROOT',
     })
-    return Navigation.popToRoot(onId, mergeOptions)
+    return Navigation.popToRoot(onId, mergeOptions).catch(this.handleNavigationError)
   }
 
   /**
@@ -135,7 +141,7 @@ export class NavigationStore {
       updating: true,
       commandType: 'SHOW_MODAL',
     })
-    return Navigation.showModal(layout)
+    return Navigation.showModal(layout).catch(this.handleNavigationError)
   }
 
   /**
@@ -147,7 +153,7 @@ export class NavigationStore {
       updating: true,
       commandType: 'DISMISS_MODAL',
     })
-    return Navigation.dismissModal(onId, mergeOptions)
+    return Navigation.dismissModal(onId, mergeOptions).catch(this.handleNavigationError)
   }
 
   /**
@@ -159,22 +165,19 @@ export class NavigationStore {
       updating: true,
       commandType: 'DISMISS_ALL_MODALS',
     })
-    return Navigation.dismissAllModals(mergeOptions)
+    return Navigation.dismissAllModals(mergeOptions).catch(this.handleNavigationError)
   }
 
   /**
    * A wrapper for Navigation.showOverlay.
-   *
-   * Only supports a single component layout as stack layout could cause complications when
-   * tracking the current componentId.
    */
   @action.bound
-  showOverlay<P>(props: NavigationProps<P>) {
+  showOverlay<P>(layout: Layout<P>) {
     this.updateNavigationStatus({
       updating: true,
       commandType: 'SHOW_OVERLAY',
     })
-    return Navigation.showOverlay(NavigationUtility.setLayoutComponent(props))
+    return Navigation.showOverlay(layout).catch(this.handleNavigationError)
   }
 
   /**
@@ -186,7 +189,14 @@ export class NavigationStore {
       updating: true,
       commandType: 'DISMISS_OVERLAY',
     })
-    return Navigation.dismissOverlay(onId)
+    return Navigation.dismissOverlay(onId).catch(this.handleNavigationError)
+  }
+
+  private handleNavigationError = (e: any) => {
+    this.updateNavigationStatus({
+      updating: false,
+    })
+    throw new Error(e)
   }
 }
 

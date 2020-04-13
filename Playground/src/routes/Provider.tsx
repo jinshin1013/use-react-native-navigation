@@ -2,8 +2,7 @@ import React from 'react'
 import { Options } from 'react-native-navigation'
 import { observer } from 'mobx-react-lite'
 import { useRegisterNavigationEvents } from '../../../lib'
-
-import { RootType } from 'routes/types'
+import { RootType } from './types'
 
 type WrappedComponentType = React.FC & { options?: Options }
 

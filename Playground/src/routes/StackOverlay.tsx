@@ -6,9 +6,9 @@ import { useNavigation } from '../../../lib'
 import { Component } from './Component'
 import { RootType } from './types'
 
-export type Screen2Props = {}
+export type StackOverlayProps = {}
 
-export const Screen2: RootType<Screen2Props> = observer(({ componentId }) => {
+export const StackOverlay: RootType<StackOverlayProps> = observer(({ componentId }) => {
   const navigation = useNavigation()
 
   return (
@@ -25,10 +25,10 @@ export const Screen2: RootType<Screen2Props> = observer(({ componentId }) => {
   )
 })
 
-Screen2.options = {
+StackOverlay.options = {
   topBar: {
     title: {
-      text: 'Screen 2',
+      text: 'Stack Layout Overlay',
     },
   },
 }

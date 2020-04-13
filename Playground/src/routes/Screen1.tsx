@@ -1,15 +1,9 @@
 import React from 'react'
-import { StyleSheet, ViewStyle, View, Text, Button, TextStyle } from 'react-native'
+import { StyleSheet, ViewStyle, View, Text, TextStyle } from 'react-native'
 import { observer } from 'mobx-react-lite'
-import { useNavigation, NavigationUtility } from '../../../lib'
+import { useNavigation } from '../../../lib'
 
-import { Screen2Props } from './Screen2'
-import { Modal1Props } from './Modal1'
-import { Modal2Props } from './Modal2'
-import { Overlay1Props } from './Overlay1'
-import { Overlay2Props } from './Overlay2'
-
-import { Screens } from './routes'
+import { Component } from './Component'
 import { RootType } from './types'
 
 export type Screen1Props = {}
@@ -19,51 +13,7 @@ export const Screen1: RootType<Screen1Props> = observer(({ componentId }) => {
 
   return (
     <View style={styles.wrapper}>
-      <Button
-        title="Push to Screen 1"
-        onPress={() =>
-          navigation.push(
-            NavigationUtility.setLayoutComponent<Screen1Props>({ name: Screens.Screen1 })
-          )
-        }
-      />
-      <Button
-        title="Push to Screen 2"
-        onPress={() =>
-          navigation.push(
-            NavigationUtility.setLayoutComponent<Screen2Props>({ name: Screens.Screen2 })
-          )
-        }
-      />
-
-      <Button
-        title="Show Modal 1"
-        onPress={() =>
-          navigation.showModal(
-            NavigationUtility.setLayoutStackComponents<Modal1Props>([{ name: Screens.Modal1 }])
-          )
-        }
-      />
-      <Button
-        title="Show Modal 2"
-        onPress={() =>
-          navigation.showModal(
-            NavigationUtility.setLayoutStackComponents<Modal2Props>([{ name: Screens.Modal2 }])
-          )
-        }
-      />
-
-      <Button
-        title="Show Overlay 1"
-        onPress={() => navigation.showOverlay<Overlay1Props>({ name: Screens.Overlay1 })}
-      />
-      <Button
-        title="Show Overlay 2"
-        onPress={() => navigation.showOverlay<Overlay2Props>({ name: Screens.Overlay2 })}
-      />
-
-      <Button title="Dismiss modal" onPress={() => navigation.dismissModal()} />
-      <Button title="Dismiss overlay" onPress={() => navigation.dismissOverlay()} />
+      <Component />
 
       <View style={styles.container}>
         <Text style={styles.text}>Screen 1</Text>
