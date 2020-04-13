@@ -1,7 +1,6 @@
 import { Options } from 'react-native-navigation'
-import { Platform } from 'react-native'
 
-const shared: Options = {
+export const defaultOptions: Options = {
   topBar: {
     title: {
       color: 'black',
@@ -13,6 +12,9 @@ const shared: Options = {
       color: 'white',
     },
   },
+  layout: {
+    componentBackgroundColor: 'white',
+  },
   animations: {
     push: { waitForRender: true },
     setRoot: { waitForRender: true },
@@ -22,16 +24,3 @@ const shared: Options = {
     pop: { waitForRender: true },
   },
 }
-
-const ios: Options = {
-  ...shared,
-}
-
-const android: Options = {
-  ...shared,
-}
-
-export const defaultOptions: Options = Platform.select({
-  android,
-  ios,
-})
