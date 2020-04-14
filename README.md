@@ -126,8 +126,8 @@ also compatible with the vanilla RNN navigation functions.
 Create a single layout `component`.
 
 ```tsx
-import { Navigation as RNNavigation } from 'react-native-navigation
-import { useNavigation } from 'use-react-native-navigation
+import { Navigation as RNNavigation } from 'react-native-navigation'
+import { useNavigation } from 'use-react-native-navigation'
 
 const navigation = useNavigation()
 
@@ -164,8 +164,8 @@ navigation.push(
 Create a stack layout `component`.
 
 ```tsx
-import { Navigation as RNNavigation } from 'react-native-navigation
-import { useNavigation } from 'use-react-native-navigation
+import { Navigation as RNNavigation } from 'react-native-navigation'
+import { useNavigation } from 'use-react-native-navigation'
 
 const navigation = useNavigation()
 
