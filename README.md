@@ -127,9 +127,6 @@ Create a single layout `component`.
 
 ```tsx
 import { Navigation as RNNavigation } from 'react-native-navigation'
-import { useNavigation } from 'use-react-native-navigation'
-
-const navigation = useNavigation()
 
 // Vanilla RNN
 Navigation.push(
@@ -145,7 +142,11 @@ Navigation.push(
   })
 )
 
+import { useNavigation } from 'use-react-native-navigation'
+
 // useNavigation
+const navigation = useNavigation()
+
 navigation.push(
   NavigationUtility.setLayoutComponent<PushScreenProps>({
     name: 'PushScreen',
@@ -165,9 +166,6 @@ Create a stack layout `component`.
 
 ```tsx
 import { Navigation as RNNavigation } from 'react-native-navigation'
-import { useNavigation } from 'use-react-native-navigation'
-
-const navigation = useNavigation()
 
 // Vanilla RNN
 Navigation.setRoot({
@@ -184,7 +182,11 @@ Navigation.setRoot({
   ]),
 })
 
+import { useNavigation } from 'use-react-native-navigation'
+
 // useNavigation
+const navigation = useNavigation()
+
 navigation.setRoot({
   root: NavigationUtility.setLayoutStackComponents<RootScreenProps>([
     {
