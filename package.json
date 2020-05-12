@@ -51,6 +51,6 @@
     "react": "16.13.1",
     "react-native": "0.62.2",
     "react-native-navigation": "6.5.0",
-    "typescript": "3.8.3"
+    "typescript": "3.9.2"
   }
 }
