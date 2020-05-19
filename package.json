@@ -12,8 +12,8 @@
   "scripts": {
     "start:playground": "react-native start",
     "pod-install": "cd Playground/ios && pod install",
-    "xcode:playground": "open ./Playground/ios/Playground.xcworkspace",
-    "install-android": "cd ./Playground/android && ./gradlew app:assembleDebug && ./gradlew installDebug",
+    "ios": "react-native run-ios --project-path ./Playground/ios",
+    "android": "react-native run-android",
     "lint:lib": "eslint ./lib",
     "build:lib": "rm -rf ./lib/dist && tsc --project tsconfig.lib.json"
   },
