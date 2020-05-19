@@ -35,22 +35,8 @@ export const NavigationActions: React.FC<NavigationActionsProps> = observer(
         />
 
         <Button
-          title="Show Single Layout Modal"
-          onPress={() =>
-            navigation.showModal(
-              NavigationUtility.setLayoutComponent<SingleModalProps>({ name: Screens.SingleModal })
-            )
-          }
-        />
-        <Button
           title="Show Stack Layout Modal"
-          onPress={() =>
-            navigation.showModal(
-              NavigationUtility.setLayoutStackComponents<StackModalProps>([
-                { name: Screens.StackModal },
-              ])
-            )
-          }
+          onPress={() => navigation.showModal({ name: Screens.StackModal })}
         />
 
         <Button

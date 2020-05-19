@@ -2,6 +2,8 @@ import { createContext, useContext } from 'react'
 import { Navigation, Options, Layout, LayoutRoot } from 'react-native-navigation'
 import { observable, action } from 'mobx'
 
+import { NavigationUtility, NavigationProps } from './utility'
+
 export type NavigationCommandType =
   | 'SET_ROOT'
   | 'SET_NEW_STACK_ROOT'
@@ -133,14 +135,18 @@ export class NavigationStore {
 
   /**
    * A wrapper for Navigation.showModal.
+   * NOTE: Modal should only be shown in Stack layout.
    */
   @action.bound
-  showModal<P>(layout: Layout<P>) {
+  showModal<P>(layouts: NavigationProps<P> | NavigationProps<P>[]) {
     this.updateNavigationStatus({
       updating: true,
       commandType: 'SHOW_MODAL',
     })
-    return Navigation.showModal(layout).catch(this.handleNavigationError)
+
+    return Navigation.showModal(
+      NavigationUtility.setLayoutStackComponents(Array.isArray(layouts) ? layouts : [layouts])
+    ).catch(this.handleNavigationError)
   }
 
   /**

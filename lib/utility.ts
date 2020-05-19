@@ -19,9 +19,12 @@ export const NavigationUtility = {
   /**
    * Set stacked component layout
    */
-  setLayoutStackComponents<P>(childrenProps: NavigationProps<P>[], options?: Options): Layout {
+  setLayoutStackComponents<P>(childrenProps: NavigationProps<P>[], stackOptions?: Options): Layout {
     return {
-      stack: { children: childrenProps.map((prop) => this.setLayoutComponent(prop)), options },
+      stack: {
+        children: childrenProps.map((prop) => this.setLayoutComponent(prop)),
+        options: stackOptions,
+      },
     }
   },
 }
