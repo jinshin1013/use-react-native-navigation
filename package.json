@@ -49,7 +49,7 @@
     "mobx-react-lite": "2.0.7",
     "prettier": "2.0.5",
     "react": "16.13.1",
-    "react-native": "0.62.2",
+    "react-native": "0.63.4",
     "react-native-navigation": "6.8.0",
     "typescript": "3.9.5"
   }
